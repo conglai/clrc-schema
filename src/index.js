@@ -1,4 +1,3 @@
-import './index.less';
 import { Component, PropTypes } from 'react';
 // import SchemaFile from './schema/file';
 import SchemaImage from './schema/image';
