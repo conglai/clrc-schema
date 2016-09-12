@@ -14,7 +14,13 @@ const browserSync = require('browser-sync').create();
 gulp.task('web', function() {
   browserSync.init({
     server: {
-      baseDir: './'
+      baseDir: './',
+      middleware: function (req, res, next) {
+        res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+        next();
+      }
+
     }
   });
 });

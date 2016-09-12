@@ -59,6 +59,24 @@ export default class SchemaArray extends Component{
       _data: _data
     });
   };
+  _onCopy = index => {
+    let _data = this.getData();
+    let newData = [];
+    _data.forEach((item, i) => {
+      if(i === index) {
+        newData.push(item);
+      }
+      newData.push(item);
+    });
+    this.setState({
+      _data: newData
+    });
+  };
+
+  _onTable = index => {
+    let op = this.refs['select' + index].value;
+    this['_on' + op](index);
+  }
 
   _getItems() {
     let { data } = this.props;
@@ -70,6 +88,14 @@ export default class SchemaArray extends Component{
     // });
     return _data || data;
   }
+
+  componentWillReceiveProps(props){
+    let { data } = props;
+    this.setState({
+      _data: data
+    });
+  }
+
 
 
   render() {
@@ -86,7 +112,6 @@ export default class SchemaArray extends Component{
     let inline = Utils.isInline(itemSchema);
     let itemsNode = '';
 
-
     if(inline) {
       let SchemeObject = Utils.getSchemaComp('object+');
       let items = _data.map((item, i) => {
@@ -96,14 +121,35 @@ export default class SchemaArray extends Component{
           schema={itemSchema}
           data={item}
           tag={`${tag}[${i}]`}
-          inTable={true}/>;
+          inTable={true}>
+          <td>
+            <select ref={'select' + i} defaultValue={'Copy'}>
+              <option value="Copy">复制</option>
+              <option value="Del">删除</option>
+              <option value="Up">上移</option>
+              <option value="Down">下移</option>
+            </select>
+            <button onClick={this._onTable.bind(this, i)}>确定</button>
+          </td>
+        </SchemeObject>;
         return content;
       });
-      itemsNode = <table>
+      let keys = Object.keys(itemSchema.properties);
+
+      itemsNode = <table className="array-table">
+        <thead>
+          <tr>
+            {keys.map((key, i) => <th className={'col-' + i} key={i}>
+              {itemSchema.properties[key].title}
+            </th>)}
+            <th>操作</th>
+          </tr>
+        </thead>
         <tbody>
           {items}
         </tbody>
       </table>;
+      return itemsNode;
     } else {
       let COMP = Utils.getSchemaComp(uniqueKey);
       let items = _data.map((item, i) => {
@@ -112,6 +158,7 @@ export default class SchemaArray extends Component{
           ref={`item_${i}`}
           schema={itemSchema}
           data={item}
+          inline={true}
           tag={`${tag}[${i}]`}/>;
         let upBtn = '', downBtn = '';
         if(i > 0) {
@@ -125,6 +172,7 @@ export default class SchemaArray extends Component{
           <span className="btns">
             {upBtn}
             {downBtn}
+            <button className="copy-btn" onClick={this._onCopy.bind(this, i)}>复制</button>
             <button className="del-btn" onClick={this._onDel.bind(this, i)}>删除</button>
           </span>
         </div>;

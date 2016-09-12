@@ -17,12 +17,14 @@ const schema = {
         home_bg: {
           type: 'string',
           format: 'image',
-          title: '首页的背景'
+          title: '首页的背景',
+          size: '1024x768'
         },
         question_bg: {
           type: 'string',
           format: 'image',
-          title: '答题页的背景'
+          title: '答题页的背景',
+          size: '200x200'
         },
       }
     },
@@ -36,11 +38,13 @@ const schema = {
           question: {
             type: 'string',
             title: '题目',
+            size: 123,
           },
           pic: {
             type: 'string',
             title: '图片',
-            format: 'image'
+            format: 'image',
+            size: '200x200'
           },
           answers: {
             type: 'array',
@@ -50,16 +54,28 @@ const schema = {
               title: '选项列表',
               properties: {
                 key: {
-                  type: 'string',
-                  title: '选项名：A,B,C,D'
+                  type: 'enum',
+                  title: '选项名',
+                  enum: [
+                    { value: 'A', name: 'A'},
+                    { value: 'B', name: 'B'},
+                    { value: 'C', name: 'C'},
+                    { value: 'D', name: 'D'},
+                  ]
                 },
                 content: {
                   type: 'string',
                   title: '选项内容',
                 },
                 score: {
-                  type: 'integer',
-                  title: '分值'
+                  type: 'enum',
+                  title: '跳转',
+                  enum: [
+                    { value: 11, name: '第11题'},
+                    { value: 11, name: '第12题'},
+                    { value: 11, name: '第13题'},
+                    { value: 11, name: '第14题'},
+                  ]
                 }
               }
             }
@@ -74,11 +90,26 @@ const data = {
     a1: '11111'
   },
   array: [
-    {},
+    {
+      question: '1111111111',
+      pic: '',
+      answers: [
+        { key: 'C', content: 'DDDDDD', score: 1 }
+      ]
+    },
   ]
 };
-
 const { Schema } = SchemaUtils;
+SchemaUtils.getUptoken = function(type) {
+  let url = `http://yy.weixinzhuyi.com/i/get-uptoken-jsonp?type=${type}`;
+  return $.ajax({
+    dataType: 'jsonp',
+    url: url,
+  }).then(res => {
+    return res.data.uptokens[0];
+  });
+};
+SchemaUtils.assetsHost = '//cdn.withme.cn/';
 SchemaUtils.init();
 
 class APP extends Component {

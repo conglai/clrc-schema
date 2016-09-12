@@ -15,12 +15,12 @@ export default class SchemaObject extends Component{
   }
 
   render() {
-    let { schema, data, tag, inTable } = this.props;
+    let { schema, data, tag, inTable, inline } = this.props;
     data = data || {};
     let keys = Object.keys(schema.properties);
     let { Utils } = this.constructor;
     tag = tag || '';
-    let inline = Utils.isInline(schema);
+    inline = inline || Utils.isInline(schema);
 
     let propNodes = keys.map((key, i) => {
       let subSchema = schema.properties[key];
@@ -57,6 +57,7 @@ export default class SchemaObject extends Component{
     if(inTable) {
       return <tr>
         {propNodes}
+        {this.props.children}
       </tr>;
     }
     if(tag.indexOf('.') === -1) {

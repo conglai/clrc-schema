@@ -21,7 +21,13 @@ export default class SchemaInput extends Component {
   render() {
     let { data, schema, tag, inline } = this.props;
     data = data || '';
-    let input = <input className="schema-input" ref="input" type="text" defaultValue={data}/>;
+
+    let input;
+    if(schema.size && schema.size > 100) {
+      input = <textarea className="schema-input"  ref="input" defaultValue={data}></textarea>;
+    } else {
+      input = <input className="schema-input" ref="input" type="text" defaultValue={data}/>;
+    }
     if(inline) {
       return input;
     }

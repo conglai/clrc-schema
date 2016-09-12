@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "description": "clrc schema",
   "scripts": {
-    "build": "babel src -d lib"
+    "build": "babel src -d lib && lessc src/index.less lib/index.css"
   },
   "main": "src/index.js",
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.14.0",
     "babel-core": "^6.5.2",
     "babel-eslint": "^5.0.0",
     "babel-loader": "^6.2.3",
@@ -38,6 +39,7 @@
     "webpack": "^1.12.14"
   },
   "dependencies": {
-    "clrc-qnimg": "^0.2.1"
+    "clrc-qnimg": "^0.2.5",
+    "qiniu-web-uploader": "^2.1.2"
   }
 }

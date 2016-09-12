@@ -3,11 +3,13 @@ import { Component, PropTypes } from 'react';
 // import SchemaFile from './schema/file';
 import SchemaImage from './schema/image';
 import SchemaInput from './schema/input';
+import SchemaEnum from './schema/enum';
 import SchemaTable from './schema/array';
 import SchemaObject from './schema/object';
 
 import Schema  from './schema';
 import UIBox from './ui/box';
+import WarningText from './ui/warning-text';
 
 let SchemaMap = {
   'object+': SchemaObject,
@@ -15,11 +17,13 @@ let SchemaMap = {
   'string+image': SchemaImage,
   'string+': SchemaInput,
   'integer+': SchemaInput,
+  'enum+': SchemaEnum,
   'array+': SchemaTable,
 };
 
 let UIMap = {
-  box: UIBox
+  box: UIBox,
+  'warning-text': WarningText
 };
 
 
