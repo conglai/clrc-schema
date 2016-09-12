@@ -1,11 +1,11 @@
 {
   "name": "clrc-schema",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "clrc schema",
   "scripts": {
     "build": "babel src -d lib && lessc src/index.less lib/index.css"
   },
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.14.0",
