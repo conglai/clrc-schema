@@ -10,7 +10,7 @@ export default class UIBox extends Component{
     tag: PropTypes.string.isRequired,
   };
   static defaultProps = {
-    collapse: true,
+    collapse: false,
   };
 
   constructor(props) {
@@ -38,9 +38,23 @@ export default class UIBox extends Component{
       style.height = 0;
       style.overflow = 'hidden';
     }
+    let level = tag.split(/[.\[]/g).length - 1;
+    let titleNode;
+    if(level > 4) {
+      titleNode = <h5>{title}</h5>;
+    } else if(!level) {
+      titleNode = <h1>{title}</h1>;
+    } else if(level === 1) {
+      titleNode = <h2>{title}</h2>;
+    } else if(level === 2) {
+      titleNode = <h3>{title}</h3>;
+    } else if(level === 3) {
+      titleNode = <h4>{title}</h4>;
+    }
+
 
     return <div className="schema-box">
-      <h3>{title}</h3>
+      {titleNode}
       <span className="prop-tag">{tag}</span>
       <button className="switch-btn" onClick={this._switchBtn}>{btnText}</button>
       <div className="box" style={style}>{this.props.children}</div>

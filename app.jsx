@@ -4,7 +4,7 @@ import SchemaUtils from './src/index';
 
 const schema = {
   type: 'object',
-  title: '选择题的模板',
+  title: '顺序题的模板',
   properties: {
     title: {
       type: 'string',
@@ -28,33 +28,42 @@ const schema = {
     },
     array: {
       type: 'array',
-      title: '数组',
+      title: '题目列表',
       items: {
         type: 'object',
-        title: '数组中的一个元素',
+        title: '填写一个题目',
         properties: {
-          a1: {
+          question: {
             type: 'string',
-            title: 'a1的'
-          },
-          subArr: {
-            type: 'array',
             title: '题目',
+          },
+          pic: {
+            type: 'string',
+            title: '图片',
+            format: 'image'
+          },
+          answers: {
+            type: 'array',
+            title: '选项',
             items: {
               type: 'object',
-              title: '题目内容',
+              title: '选项列表',
               properties: {
-                percent: {
+                key: {
                   type: 'string',
-                  title: '百分比',
+                  title: '选项名：A,B,C,D'
                 },
                 content: {
                   type: 'string',
-                  title: '问题详情',
+                  title: '选项内容',
+                },
+                score: {
+                  type: 'integer',
+                  title: '分值'
                 }
               }
             }
-          }
+          },
         }
       }
     }
@@ -64,7 +73,9 @@ const data = {
   obj: {
     a1: '11111'
   },
-  array: [{},{},{}]
+  array: [
+    {},
+  ]
 };
 
 const { Schema } = SchemaUtils;
@@ -72,9 +83,8 @@ SchemaUtils.init();
 
 class APP extends Component {
   render() {
-    return <div className="rc-schema-editor">
-      <h1>从来前端组件测试：</h1>
-      <Schema ref="obj" schema={schema} data={data} tag="root" collapse={false}/>
+    return <div>
+      <Schema ref="obj" schema={schema} data={data}/>
     </div>;
   }
 };

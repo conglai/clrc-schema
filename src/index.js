@@ -1,17 +1,18 @@
 import './index.less';
 import { Component, PropTypes } from 'react';
 // import SchemaFile from './schema/file';
-// import SchemaImage from './schema/image';
+import SchemaImage from './schema/image';
 import SchemaInput from './schema/input';
 import SchemaTable from './schema/array';
 import SchemaObject from './schema/object';
 
+import Schema  from './schema';
 import UIBox from './ui/box';
 
 let SchemaMap = {
   'object+': SchemaObject,
   // 'string+file': SchemaFile,
-  // 'string+image': SchemaImage,
+  'string+image': SchemaImage,
   'string+': SchemaInput,
   'integer+': SchemaInput,
   'array+': SchemaTable,
@@ -24,16 +25,23 @@ let UIMap = {
 
 module.exports =  {
   Schema: SchemaObject,
-  getSchemaComp: (key, uniqueKey, schema, data, tag) => {
+  getSchemaComp: key => {
     let COMP = SchemaMap[key];
-    if(COMP){
-      return <COMP key={uniqueKey} ref={uniqueKey} schema={schema} data={data} tag={tag}/>;
-    } else {
-      return '';
-    }
+    return COMP;
   },
   getUI: key => {
     return UIMap[key];
+  },
+  isInline: schema => {
+    let keys = Object.keys(schema.properties);
+    let inline = true;
+    keys.forEach(key => {
+      let { type } = schema.properties[key];
+      if(type === 'object' || type === 'array') {
+        inline = false;
+      }
+    });
+    return inline;
   },
   init: function(map) {
     let keys = Object.keys(SchemaMap);

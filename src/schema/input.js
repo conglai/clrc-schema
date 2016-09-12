@@ -13,13 +13,24 @@ export default class SchemaInput extends Component {
     return inputValue;
   }
 
+  componentWillReceiveProps(props){
+    let { data } = props;
+    this.refs.input.value = data || '';
+  }
+
   render() {
-    let { data, schema, tag } = this.props;
+    let { data, schema, tag, inline } = this.props;
+    data = data || '';
+    let input = <input className="schema-input" ref="input" type="text" defaultValue={data}/>;
+    if(inline) {
+      return input;
+    }
+
     let { Utils } = this.constructor;
     let UIBox = Utils.getUI('box');
 
     return <UIBox title={schema.title} tag={tag}>
-      <input ref="input" type="text" defaultValue={data}/>
+      {input}
     </UIBox>;
   }
 }

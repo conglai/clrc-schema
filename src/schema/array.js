@@ -8,11 +8,15 @@ export default class SchemaArray extends Component{
   }
 
   getData() {
-    return [];
+    let _data = this._getItems();
+    _data = _data.map((item, i) => {
+      return this.refs[`item_${i}`].getData();
+    });
+    return _data;
   }
 
   _onAdd = e => {
-    let _data = this._getItems();
+    let _data = this.getData();
     _data.push(0);
     this.setState({
       _data: _data
@@ -26,7 +30,7 @@ export default class SchemaArray extends Component{
   };
 
   _onDel = index => {
-    let _data = this._getItems();
+    let _data = this.getData();
     let newData = [];
     _data.forEach((item, i) => {
       if(i !== index) {
@@ -38,7 +42,7 @@ export default class SchemaArray extends Component{
     });
   };
   _onUp = index => {
-    let _data = this._getItems();
+    let _data = this.getData();
     let tmp = _data[index];
     _data[index] = _data[index - 1];
     _data[index - 1] = tmp;
@@ -47,7 +51,7 @@ export default class SchemaArray extends Component{
     });
   };
   _onDown = index => {
-    let _data = this._getItems();
+    let _data = this.getData();
     let tmp = _data[index];
     _data[index] = _data[index + 1];
     _data[index + 1] = tmp;
@@ -60,6 +64,10 @@ export default class SchemaArray extends Component{
     let { data } = this.props;
     let { _data } = this.state;
     data = data || [];
+    _data = _data || data;
+    // _data = _data.map((item, i) => {
+    //   return this.refs[`item_${i}`].getData();
+    // });
     return _data || data;
   }
 
@@ -74,8 +82,14 @@ export default class SchemaArray extends Component{
     let uniqueKey = type + '+' + format;
     let itemLength = _data.length;
     let items = _data.map((item, i) => {
-      let content = Utils.getSchemaComp(
-        uniqueKey, `item_${i}`, schema.items, item, `${tag}[${i}]`);
+      let COMP = Utils.getSchemaComp(uniqueKey);
+
+      let content =  <COMP
+        key={`item_${i}`}
+        ref={`item_${i}`}
+        schema={schema.items}
+        data={item}
+        tag={`${tag}[${i}]`}/>;
       let upBtn = '', downBtn = '';
       if(i > 0) {
         upBtn = <button className="up-btn" onClick={this._onUp.bind(this, i)}>上移</button>;
@@ -85,9 +99,11 @@ export default class SchemaArray extends Component{
       }
       return <div key={i} className="array-item">
         {content}
-        <button className="del-btn" onClick={this._onDel.bind(this, i)}>删除</button>
-        {upBtn}
-        {downBtn}
+        <span className="btns">
+          {upBtn}
+          {downBtn}
+          <button className="del-btn" onClick={this._onDel.bind(this, i)}>删除</button>
+        </span>
       </div>;
     });
 

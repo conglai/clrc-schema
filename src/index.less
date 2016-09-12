@@ -4,7 +4,10 @@
 @c-word-default: #333;
 @c-border-color: #e8e8e8;
 @c-warning: #f34b4b;
-.rc-schema-editor {
+.clrc-schema {
+  h1,h2,h3,h4,h5 {
+    margin: 10px 0;
+  }
   .schema-box {
     margin-top: 15px;
     padding: 15px;
@@ -33,11 +36,38 @@
     }
   }
 
+  .schema-input {
+    width: 100%;
+  }
+
+  .object-key-row {
+    position: relative;
+    margin-bottom: 10px;
+    .key-title {
+      display: inline-block;
+      width: 20%;
+      vertical-align: top;
+    }
+    .key-obj {
+      display: inline-block;
+      width: 70%;
+      vertical-align: top;
+    }
+  }
+
 
   //数组的样式
   .schema-array{
     .items-cont {
       margin: 0 0 10px 0;
+    }
+    .array-item {
+      position: relative;
+    }
+    .btns {
+      position: absolute;
+      top: 5px;
+      right: 60px;
     }
   }
 }
