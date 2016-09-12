@@ -15,7 +15,7 @@ export default class SchemaObject extends Component{
   }
 
   render() {
-    let { schema, data, tag } = this.props;
+    let { schema, data, tag, inTable } = this.props;
     data = data || {};
     let keys = Object.keys(schema.properties);
     let { Utils } = this.constructor;
@@ -29,17 +29,23 @@ export default class SchemaObject extends Component{
       format = format || '';
       let uniqueKey = type + '+' + format;
       let COMP = Utils.getSchemaComp(uniqueKey);
+      let ref = `prop_${key}`;
       let compObj = <COMP
-        key={`prop_${key}`}
-        ref={`prop_${key}`}
+        key={ref}
+        ref={ref}
         schema={subSchema}
         data={subData}
         tag={`${tag}.${key}`}
         inline={inline}
       />;
+      if(inTable) {
+        return <td className={`m-col-${i}`} key={`${ref}${i}`}>
+        {compObj}
+        </td>;
+      }
 
       if(inline) {
-        return <div className="object-key-row">
+        return <div className="object-key-row" key={i}>
           <span className="key-title">{subSchema.title}</span>
           <span className="key-obj">{compObj}</span>
         </div>;
@@ -47,6 +53,12 @@ export default class SchemaObject extends Component{
         return compObj;
       }
     });
+
+    if(inTable) {
+      return <tr>
+        {propNodes}
+      </tr>;
+    }
     if(tag.indexOf('.') === -1) {
       return <div className="clrc-schema">
         <h1>{schema.title}</h1>

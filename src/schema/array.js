@@ -71,6 +71,7 @@ export default class SchemaArray extends Component{
     return _data || data;
   }
 
+
   render() {
     let { schema, data, tag } = this.props;
     let _data = this._getItems();
@@ -81,36 +82,62 @@ export default class SchemaArray extends Component{
     format = format || '';
     let uniqueKey = type + '+' + format;
     let itemLength = _data.length;
-    let items = _data.map((item, i) => {
-      let COMP = Utils.getSchemaComp(uniqueKey);
+    let itemSchema = schema.items;
+    let inline = Utils.isInline(itemSchema);
+    let itemsNode = '';
 
-      let content =  <COMP
-        key={`item_${i}`}
-        ref={`item_${i}`}
-        schema={schema.items}
-        data={item}
-        tag={`${tag}[${i}]`}/>;
-      let upBtn = '', downBtn = '';
-      if(i > 0) {
-        upBtn = <button className="up-btn" onClick={this._onUp.bind(this, i)}>上移</button>;
-      }
-      if(i < itemLength - 1) {
-        downBtn = <button className="down-btn" onClick={this._onDown.bind(this, i)}>下移</button>;
-      }
-      return <div key={i} className="array-item">
-        {content}
-        <span className="btns">
-          {upBtn}
-          {downBtn}
-          <button className="del-btn" onClick={this._onDel.bind(this, i)}>删除</button>
-        </span>
-      </div>;
-    });
+
+    if(inline) {
+      let SchemeObject = Utils.getSchemaComp('object+');
+      let items = _data.map((item, i) => {
+        let content =  <SchemeObject
+          key={`item_${i}`}
+          ref={`item_${i}`}
+          schema={itemSchema}
+          data={item}
+          tag={`${tag}[${i}]`}
+          inTable={true}/>;
+        return content;
+      });
+      itemsNode = <table>
+        <tbody>
+          {items}
+        </tbody>
+      </table>;
+    } else {
+      let COMP = Utils.getSchemaComp(uniqueKey);
+      let items = _data.map((item, i) => {
+        let content =  <COMP
+          key={`item_${i}`}
+          ref={`item_${i}`}
+          schema={itemSchema}
+          data={item}
+          tag={`${tag}[${i}]`}/>;
+        let upBtn = '', downBtn = '';
+        if(i > 0) {
+          upBtn = <button className="up-btn" onClick={this._onUp.bind(this, i)}>上移</button>;
+        }
+        if(i < itemLength - 1) {
+          downBtn = <button className="down-btn" onClick={this._onDown.bind(this, i)}>下移</button>;
+        }
+        return <div key={i} className="array-item">
+          {content}
+          <span className="btns">
+            {upBtn}
+            {downBtn}
+            <button className="del-btn" onClick={this._onDel.bind(this, i)}>删除</button>
+          </span>
+        </div>;
+      });
+      itemsNode = <div className="items-cont">{items}</div>;
+    }
+
+
 
 
     return <UIBox title={schema.title} tag={tag} collapse={false}>
       <div className="schema-array">
-        <div className="items-cont">{items}</div>
+        {itemsNode}
         <button className="add-btn" onClick={this._onAdd}>增加一个</button>
         <button className="clear-btn" onClick={this._onClear}>清空</button>
       </div>
