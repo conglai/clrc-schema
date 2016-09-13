@@ -26,6 +26,10 @@ gulp.task('web', function() {
 });
 
 const webpack = require('webpack');
+let unf;
+let typeMap = {
+  'less': 'css'
+}
 gulp.task('default', ['prepare', 'web'], () => {
   webpack(webpackConfig).watch({}, (err, stats) => {
     gutil.log(stats.toString({
@@ -35,7 +39,17 @@ gulp.task('default', ['prepare', 'web'], () => {
     }));
   });
 
-  gulp.watch(['build/*.js', 'build/*.css'], path => {
-    browserSync.reload(path);
+  let reloadType;
+  gulp.watch('src/*.+(js|less|jsx)', file => {
+    let fileType = file.path.split('.').pop();
+    reloadType = typeMap[fileType] || fileType;
+
+    gutil.log(gutil.colors.green(`${reloadType} has changed....`));
+  });
+
+  gulp.watch('build/*.+(js|css)', file => {
+    if(!reloadType) return;
+    browserSync.reload(`*.${reloadType}`);
+    reloadType = unf;
   });
 });
