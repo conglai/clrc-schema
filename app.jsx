@@ -100,6 +100,7 @@ const data = {
     },
   ]
 };
+
 const { Schema } = SchemaUtils;
 SchemaUtils.getUptoken = function(type) {
   let url = `http://yy.weixinzhuyi.com/i/get-uptoken-jsonp?type=${type}`;
