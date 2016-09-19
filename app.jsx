@@ -70,10 +70,8 @@ const schema = {
                   type: 'enum',
                   title: '跳转',
                   enum: [
-                    { value: 11, name: '第11题'},
-                    { value: 11, name: '第12题'},
-                    { value: 11, name: '第13题'},
-                    { value: 11, name: '第14题'},
+                    { value: true, name: 'TRUE'},
+                    { value: false, name: 'FALSE'},
                   ]
                 }
               }
@@ -112,6 +110,13 @@ SchemaUtils.assetsHost = '//cdn.withme.cn/';
 SchemaUtils.init();
 
 class APP extends Component {
+
+  componentDidMount() {
+    window._getData = () => {
+      let data = this.refs.obj.getData();
+      console.log(data);
+    };
+  }
   render() {
     return <div>
       <Schema ref="obj" schema={schema} data={data}/>

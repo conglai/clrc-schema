@@ -5,7 +5,17 @@ export default class SchemaEnum extends Component {
 
   getData() {
     let inputValue = this.refs.input.value;
-    return inputValue;
+    let result;
+    let { schema } = this.props;
+    let options = schema.enum;
+    for (let i = options.length - 1; i >= 0; i--) {
+      let op = options[i];
+      if(op.name === inputValue) {
+        result = op.value;
+        break;
+      }
+    }
+    return result;
   }
 
   componentWillReceiveProps(props){
@@ -18,7 +28,7 @@ export default class SchemaEnum extends Component {
     data = data || '';
     let options = schema.enum;
     let input = <select ref="input" defaultValue={data}>
-      {options.map((op, i) => <option key={i} value={op.value}>{op.name}</option>)}
+      {options.map((op, i) => <option key={i} value={op.name}>{op.name}</option>)}
     </select>;
     if(inline) {
       return input;
