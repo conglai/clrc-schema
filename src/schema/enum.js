@@ -18,14 +18,8 @@ export default class SchemaEnum extends Component {
     return result;
   }
 
-  componentWillReceiveProps(props){
-    let { data } = props;
-    this.refs.input.value = data || '';
-  }
-
-  render() {
-    let { data, schema, tag, inline } = this.props;
-    data = data || '';
+  _getActiveName(data) {
+    let { schema } = this.props;
     let options = schema.enum;
     let defaultData = options[0].name;
     for (let i = options.length - 1; i >= 0; i--) {
@@ -35,6 +29,20 @@ export default class SchemaEnum extends Component {
         break;
       }
     }
+    return defaultData;
+  }
+
+  componentWillReceiveProps(props){
+    let { data } = props;
+    let defaultData = this._getActiveName(data);
+    this.refs.input.value = defaultData;
+  }
+
+  render() {
+    let { data, schema, tag, inline } = this.props;
+    data = data || '';
+    let options = schema.enum;
+    let defaultData = this._getActiveName(data);
     let input = <select ref="input" defaultValue={defaultData}>
       {options.map((op, i) => <option key={i} value={op.name}>{op.name}</option>)}
     </select>;
