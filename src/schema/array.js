@@ -7,6 +7,21 @@ export default class SchemaArray extends Component{
     this.state = {};
   }
 
+
+  _onCopy = index => {
+    let _data = this.getData();
+    let newData = [];
+    _data.forEach((item, i) => {
+      if(i === index) {
+        newData.push(item);
+      }
+      newData.push(item);
+    });
+    this.setState({
+      _data: newData
+    });
+  };
+
   getData() {
     let _data = this._getItems();
     _data = _data.map((item, i) => {
@@ -57,19 +72,6 @@ export default class SchemaArray extends Component{
     _data[index + 1] = tmp;
     this.setState({
       _data: _data
-    });
-  };
-  _onCopy = index => {
-    let _data = this.getData();
-    let newData = [];
-    _data.forEach((item, i) => {
-      if(i === index) {
-        newData.push(item);
-      }
-      newData.push(item);
-    });
-    this.setState({
-      _data: newData
     });
   };
 
@@ -149,7 +151,11 @@ export default class SchemaArray extends Component{
           {items}
         </tbody>
       </table>;
-      return itemsNode;
+      return <div>
+        {itemsNode}
+        <button className="add-btn" onClick={this._onAdd}>增加一个</button>
+        <button className="clear-btn" onClick={this._onClear}>清空</button>
+      </div>;
     } else {
       let COMP = Utils.getSchemaComp(uniqueKey);
       let items = _data.map((item, i) => {
