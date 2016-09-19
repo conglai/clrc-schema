@@ -45,9 +45,10 @@ export default class SchemaObject extends Component{
       }
 
       if(inline) {
+        let contentCls = subSchema.type === 'array' ? 'key-obj-row': 'key-obj';
         return <div className="object-key-row" key={i}>
           <span className="key-title">{subSchema.title}</span>
-          <span className="key-obj">{compObj}</span>
+          <span className={contentCls}>{compObj}</span>
         </div>;
       } else {
         return compObj;

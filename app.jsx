@@ -42,10 +42,8 @@ const schema = {
             size: 123,
           },
           pic: {
-            type: 'string',
+            type: 'integer',
             title: '图片',
-            format: 'image',
-            size: '200x200'
           },
           answers: {
             type: 'array',
@@ -95,7 +93,6 @@ const data = {
       question: '1111111111',
       pic: '',
       answers: [
-        { key: 'C', content: 'DDDDDD', score: 1 }
       ]
     },
   ]

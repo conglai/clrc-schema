@@ -24,7 +24,9 @@ export default class SchemaInput extends Component {
 
     let input;
     if(schema.size && schema.size > 100) {
-      input = <textarea className="schema-input"  ref="input" defaultValue={data}></textarea>;
+      input = <textarea className="schema-ta"  ref="input" defaultValue={data}></textarea>;
+    } else if(schema.type === 'integer') {
+      input = <input className="schema-number" ref="input" type="number" defaultValue={data}/>;
     } else {
       input = <input className="schema-input" ref="input" type="text" defaultValue={data}/>;
     }
