@@ -27,7 +27,15 @@ export default class SchemaEnum extends Component {
     let { data, schema, tag, inline } = this.props;
     data = data || '';
     let options = schema.enum;
-    let input = <select ref="input" defaultValue={data}>
+    let defaultData = options[0].name;
+    for (let i = options.length - 1; i >= 0; i--) {
+      let op = options[i];
+      if(op.value === data) {
+        defaultData = op.name;
+        break;
+      }
+    }
+    let input = <select ref="input" defaultValue={defaultData}>
       {options.map((op, i) => <option key={i} value={op.name}>{op.name}</option>)}
     </select>;
     if(inline) {
