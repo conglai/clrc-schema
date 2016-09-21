@@ -18,8 +18,6 @@ export default class SchemaImage extends Component{
   _fileInputChange = e => {
     e.preventDefault();
     let files = e.target.files;
-    console.log(files);
-    // this._checkSize(files[0]);
     this._uploadFile(files[0]);
   };
 
@@ -49,18 +47,26 @@ export default class SchemaImage extends Component{
     let uptoken = await Utils.getUptoken('png');
     let uploader = new Uploader(file, uptoken);
     let res = await uploader.upload();
+    this._loadPic(`${Utils.assetsHost}${res.key}`);
+  };
+
+  _loadPic(imgUrl) {
     let config = this._getBoxSize();
     config.width = Math.floor(config.width);
     let imgConfig = {
-      src: `${Utils.assetsHost}${res.key}`,
+      src: imgUrl,
       w: config.width,
       h: config.height
     };
     this.refs.img.loadPic(imgConfig);
-  };
+  }
 
   componentDidMount() {
-    // this.refs.info.warning('ssssss');
+    let { data, schema } = this.props;
+    if(data) {
+      this._loadPic(data);
+    }
+    this.refs.info.warning(`上传（${schema.size}）的图片`, '#333333');
   }
 
   _getSize() {
@@ -96,7 +102,7 @@ export default class SchemaImage extends Component{
         <QNImg ref="img" lazy={true}/>
       </span>
       <span className="mask layer"></span>
-      <span className="layer">
+      <span className="layer info-layer">
         <span className="op-cont">
           <input
             ref="file"

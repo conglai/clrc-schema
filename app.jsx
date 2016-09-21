@@ -86,6 +86,9 @@ const data = {
   obj: {
     a1: '11111'
   },
+  pics: {
+    question_bg: '//cdn.withme.cn/withme.back.u.f05d7566b51608580f4e32dfe8b09661.png'
+  },
   array: [
     {
       question: '1111111111',

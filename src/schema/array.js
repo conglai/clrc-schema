@@ -7,7 +7,6 @@ export default class SchemaArray extends Component{
     this.state = {};
   }
 
-
   _onCopy = index => {
     let _data = this.getData();
     let newData = [];
@@ -185,9 +184,6 @@ export default class SchemaArray extends Component{
       });
       itemsNode = <div className="items-cont">{items}</div>;
     }
-
-
-
 
     return <UIBox title={schema.title} tag={tag} collapse={false}>
       <div className="schema-array">
