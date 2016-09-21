@@ -66,7 +66,7 @@ export default class SchemaImage extends Component{
     if(data) {
       this._loadPic(data);
     }
-    this.refs.info.warning(`上传（${schema.size}）的图片`, '#333333');
+    this.refs.info.warning(`上传（${schema.size}）的图片`, '#ddd');
   }
 
   _getSize() {
